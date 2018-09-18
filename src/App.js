@@ -24,6 +24,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    console.log('Appissä')
     blogService.getAll().then(blogs =>
       this.setState({ blogs }))
     const loggedUserJSON = window.localStorage.getItem('user')
@@ -91,7 +92,7 @@ class App extends React.Component {
   render() {
     const loginForm = () => {
       return (
-        <div>
+        <div className='login'>
           <Togglable buttonLabel="login">
             <LoginForm
               username={this.state.username}
@@ -107,22 +108,22 @@ class App extends React.Component {
       this.state.notification ?
         <Notification message={this.state.notification} /> : <div></div>
     return (
-      <div>
+      <div className='all'>
         <h2>blogs</h2>
         <br></br>
         {this.state.user === null && loginForm()}
         {showNotification}
         {this.state.user !== null && <div>
-          <Togglable buttonLabel="create new" ref={component => this.newBlog = component}>
+          <Togglable className='togglableContent' buttonLabel="create new" ref={component => this.newBlog = component}>
             <NewBlog notification={this.handleBlogAddNotification} user={this.state.user} />
           </Togglable>
           <br></br>
-          <div>
+          <div className='loggedin'>
             {this.state.user.name} {this.state.user.id} logged in  <button type="submit" onClick={this.logout}>logout</button>
             <br></br>
             <br></br>
             {this.state.blogs && this.state.blogs.map(blog =>
-              <Blog key={blog.id} deleteBlog={this.deleteBlog} blog={blog}/>)}
+              <Blog className='blogs' key={blog.id} deleteBlog={this.deleteBlog} blog={blog}/>)}
           </div>
         </div>}
       </div>

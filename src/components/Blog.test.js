@@ -1,8 +1,16 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import Blog from './Blog'
 
 describe.only('<Blog />', () => {
+    beforeAll(() => {
+        const user = {
+            username: 'tester',
+            token: '1231231214',
+            name: 'Teuvo Testaaja'
+        }
+        localStorage.setItem('user', JSON.stringify(user))
+    })
     it('renders content', () => {
         const blog = {
             title: 'Testing testing',
@@ -39,5 +47,3 @@ describe.only('<Blog />', () => {
         expect(infoDiv.text()).toContain(blog.likes.toString())
     })
 })
-
-

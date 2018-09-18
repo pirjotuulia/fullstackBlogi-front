@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-// import Blog from './components/Blog'
+import Blog from './components/Blog'
 import App from './App'
 jest.mock('./services/__mocks__/blogs')
 // jest.mock('./services/__mocks__/login')
@@ -10,7 +10,7 @@ import blogService from './services/__mocks__/blogs'
 describe('<App />', () => {
     let app
     beforeAll(() => {
-        app = shallow(<App />)
+        app = mount(<App />)
     })
 
     describe('when user is not logged', () => {
@@ -21,32 +21,33 @@ describe('<App />', () => {
         it('only login form is rendered', () => {
             app.update()
             const alldiv = app.find('.all')
-            console.log(alldiv.debug())
+            // console.log(alldiv.debug())
             const logindiv = app.find('.login')
-            console.log(logindiv.debug())
+            // console.log(logindiv.debug())
             const blogdiv = app.find('.blogs')
-            console.log(blogdiv.debug())
+            // console.log(blogdiv.debug())
             expect(blogdiv.debug()).toBe('')
         })
     })
 
-    // describe('when user is logged', () => {
-    //     beforeEach(() => {
-    //         const user = {
-    //             username: 'tester',
-    //             token: '1231231214',
-    //             name: 'Teuvo Testaaja'
-    //         }
+    describe('when user is logged', () => {
+        beforeEach(() => {
+            const user = {
+                username: 'tester',
+                token: '1231231214',
+                name: 'Teuvo Testaaja'
+            }
 
-    //         localStorage.setItem('user', JSON.stringify(user))
-    //         // luo sovellus siten, että käyttäjä on kirjautuneena
-    //         app = mount(<App />)
-    //     })
+            localStorage.setItem('user', JSON.stringify(user))
+            // luo sovellus siten, että käyttäjä on kirjautuneena
+            app = mount(<App />)
+        })
 
-    //     it('all blogs are rendered', () => {
-    //         app.update()
-    //         const blogComponents = app.find(Blog)
-    //         expect(blogComponents.length).toEqual(blogService.blogs.length)
-    //     })
-    // })
+        it('all blogs are rendered', () => {
+            app.update()
+            const blogComponents = app.find(Blog)
+            // console.log(blogComponents.debug())
+            expect(blogComponents.length).toEqual(blogService.blogs.length)
+        })
+    })
 })

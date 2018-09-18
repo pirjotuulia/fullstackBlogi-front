@@ -24,7 +24,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Appissä')
+    // console.log('Appissä')
     blogService.getAll().then(blogs =>
       this.setState({ blogs }))
     const loggedUserJSON = window.localStorage.getItem('user')

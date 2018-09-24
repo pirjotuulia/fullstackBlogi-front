@@ -6,14 +6,18 @@ import NewBlog from './components/NewBlog';
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
+import BlogList from './components/BlogList'
 import './index.css'
 
+import { blogInitialization } from './reducers/blogReducer'
+import { messageCreation } from './reducers/notificationReducer'
+import { connect } from 'react-redux'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      blogs: [],
+      // blogs: [],
       error: null,
       username: '',
       password: '',
@@ -23,10 +27,8 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // console.log('Appissä')
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs }))
+  componentDidMount = async () => {
+    this.props.blogInitialization()
     const loggedUserJSON = window.localStorage.getItem('user')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -34,7 +36,6 @@ class App extends React.Component {
       blogService.setToken(user.token)
     }
   }
-
 
   login = async (event) => {
     event.preventDefault()
@@ -45,10 +46,7 @@ class App extends React.Component {
       blogService.setToken(user.token)
     } catch (exception) {
       this.setState({ error: 'Username or password not found.', })
-      this.handleSignInErrorNotification()
-      setTimeout(() => {
-        this.setState({ error: null })
-      }, 5000)
+      this.props.messageCreation('wrong username or password', 5)
     }
   }
 
@@ -62,31 +60,6 @@ class App extends React.Component {
 
   handleLoginFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
-  }
-
-  handleBlogAddNotification = (blog) => {
-    let message = `a new blog ${blog.title} by ${blog.author} added`
-    this.setState({ notification: message })
-    setTimeout(() => {
-      this.setState({ notification: null })
-    }, 5000)
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs }))
-    this.newBlog.toggleVisibility()
-  }
-
-  handleSignInErrorNotification = () => {
-    let message = 'wrong username or password'
-    this.setState({ notification: message })
-    setTimeout(() => {
-      this.setState({ notification: null })
-    }, 5000)
-  }
-
-  deleteBlog = async (event) => {
-    let deleted = await blogService.deleteBlog(event.target.id)
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs }))
   }
 
   render() {
@@ -103,17 +76,13 @@ class App extends React.Component {
           </Togglable>
         </div>)
     }
-    this.state.blogs.sort((a, b) => b.likes - a.likes)
-    const showNotification =
-      this.state.notification ?
-        <Notification message={this.state.notification} /> : <div></div>
     return (
       <div className='all'>
-        <h2>blogs</h2>
-        <br></br>
+        <h2>Blogs</h2>
         {this.state.user === null && loginForm()}
-        {showNotification}
-        {this.state.user !== null && <div>
+        {/* {showNotification} */}
+        <Notification />
+        {this.state.user&& <div>
           <Togglable className='togglableContent' buttonLabel="create new" ref={component => this.newBlog = component}>
             <NewBlog notification={this.handleBlogAddNotification} user={this.state.user} />
           </Togglable>
@@ -122,8 +91,7 @@ class App extends React.Component {
             {this.state.user.name} {this.state.user.id} logged in  <button type="submit" onClick={this.logout}>logout</button>
             <br></br>
             <br></br>
-            {this.state.blogs && this.state.blogs.map(blog =>
-              <Blog className='blogs' key={blog.id} deleteBlog={this.deleteBlog} blog={blog}/>)}
+            <BlogList />
           </div>
         </div>}
       </div>
@@ -131,4 +99,7 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default connect(
+  null,
+  { messageCreation, blogInitialization }
+)(App)

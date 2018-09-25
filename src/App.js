@@ -1,16 +1,18 @@
 import React from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
-import loginService from './services/login'
+import userService from './services/users'
 import NewBlog from './components/NewBlog';
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 import BlogList from './components/BlogList'
+import UserList from './components/UserList'
 import './index.css'
 
 import { blogInitialization } from './reducers/blogReducer'
+import { userInitialization } from './reducers/userReducer'
 import { messageCreation } from './reducers/notificationReducer'
+import { login, logout } from './reducers/loginReducer'
 import { connect } from 'react-redux'
 
 class App extends React.Component {
@@ -21,7 +23,6 @@ class App extends React.Component {
       error: null,
       username: '',
       password: '',
-      user: null,
       notification: '',
       loginVisible: ''
     }
@@ -29,31 +30,28 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     this.props.blogInitialization()
-    const loggedUserJSON = window.localStorage.getItem('user')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      this.setState({ user })
-      blogService.setToken(user.token)
+    if (this.props.user) {
+      blogService.setToken(this.props.user.token)
     }
   }
 
-  login = async (event) => {
+  handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({ username: this.state.username, password: this.state.password })
-      this.setState({ username: '', password: '', user })
-      window.localStorage.setItem('user', JSON.stringify(user))
-      blogService.setToken(user.token)
+      const data = { username: this.state.username, password: this.state.password }
+      this.setState({ username: '', password: '' })
+      await this.props.login(data)
+      blogService.setToken(this.props.user.token)
+      userService.setToken(this.props.user.token)
     } catch (exception) {
       this.setState({ error: 'Username or password not found.', })
       this.props.messageCreation('wrong username or password', 5)
     }
   }
 
-  logout = async (event) => {
+  handleLogout = async (event) => {
     event.preventDefault()
-    localStorage.removeItem('user')
-    localStorage.removeItem('token')
+    this.props.logout()
     blogService.resetToken()
     this.setState({ user: null })
   }
@@ -71,7 +69,7 @@ class App extends React.Component {
               username={this.state.username}
               password={this.state.password}
               handleChange={this.handleLoginFieldChange}
-              handleSubmit={this.login}
+              handleSubmit={this.handleLogin}
             />
           </Togglable>
         </div>)
@@ -79,19 +77,20 @@ class App extends React.Component {
     return (
       <div className='all'>
         <h2>Blogs</h2>
-        {this.state.user === null && loginForm()}
+        {this.props.user === '' && loginForm()}
         {/* {showNotification} */}
         <Notification />
-        {this.state.user&& <div>
+        {this.props.user && <div>
           <Togglable className='togglableContent' buttonLabel="create new" ref={component => this.newBlog = component}>
-            <NewBlog notification={this.handleBlogAddNotification} user={this.state.user} />
+            <NewBlog notification={this.handleBlogAddNotification} user={this.props.user} />
           </Togglable>
           <br></br>
           <div className='loggedin'>
-            {this.state.user.name} {this.state.user.id} logged in  <button type="submit" onClick={this.logout}>logout</button>
+            {this.props.user.name} {this.props.user.id} logged in  <button type="submit" onClick={this.handleLogout}>logout</button>
             <br></br>
             <br></br>
             <BlogList />
+            <UserList />
           </div>
         </div>}
       </div>
@@ -99,7 +98,15 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    handleLogout: state.handleLogout,
+    handleLogin: state.handleLogin,
+  }
+}
+
 export default connect(
-  null,
-  { messageCreation, blogInitialization }
+  mapStateToProps,
+  { login, logout, messageCreation, blogInitialization, userInitialization }
 )(App)

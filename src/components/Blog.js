@@ -27,27 +27,30 @@ class Blog extends React.Component {
   }
 
   render() {
-    let user
-    if (window.localStorage) {
-      user = JSON.parse(window.localStorage.getItem('user'))
-    }
+    // let user
+    // if (window.localStorage) {
+    //   user = JSON.parse(window.localStorage.getItem('user'))
+    // }
+    console.log(this.props)
+    
     return (
       <div className="blogentry" >
-        <div className='namediv' onClick={this.toggleDetails}>{this.props.blog.title} {this.props.blog.author}</div>
-        {this.state.visible && <div className='infodiv'>
+        {this.props.blog&&<div className='namediv' onClick={this.toggleDetails}>{this.props.blog.title} {this.props.blog.author}</div>}
+        {this.props.blog&&this.state.visible && <div className='infodiv'>
           <a href={this.props.blog.url}>{this.props.blog.url}</a><br></br>
           {this.props.blog.likes} likes <button onClick={this.handleLike} id={this.props.blog.id}>likes</button><br></br>
           added by {this.props.blog.author}<br></br>
-          {(!this.props.blog.user || this.props.blog.author === user.name) && <button id={this.props.blog.id} onClick={this.handleDelete}>delete</button>}
+          {(!this.props.blog.user || this.props.blog.author === this.props.user.name) && <button id={this.props.blog.id} onClick={this.handleDelete}>delete</button>}
         </div>}
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    blogs: state.blogs
+    blog: ownProps.blog,
+    user: state.user
   }
 }
 

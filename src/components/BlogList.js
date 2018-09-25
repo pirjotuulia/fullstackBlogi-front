@@ -2,7 +2,6 @@ import React from 'react'
 import { messageCreation } from '../reducers/notificationReducer'
 import { likeCreation, blogDelete } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
-import blogService from '../services/blogs'
 import Blog from '../components/Blog'
 
 class BlogList extends React.Component {

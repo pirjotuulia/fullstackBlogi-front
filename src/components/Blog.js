@@ -27,12 +27,6 @@ class Blog extends React.Component {
   }
 
   render() {
-    // let user
-    // if (window.localStorage) {
-    //   user = JSON.parse(window.localStorage.getItem('user'))
-    // }
-    console.log(this.props)
-    
     return (
       <div className="blogentry" >
         {this.props.blog&&<div className='namediv' onClick={this.toggleDetails}>{this.props.blog.title} {this.props.blog.author}</div>}

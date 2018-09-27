@@ -2,6 +2,7 @@ import React from 'react'
 import { messageCreation } from '../reducers/notificationReducer'
 import { connect } from 'react-redux'
 import User from '../components/User'
+import Header from './Header'
 
 class UserList extends React.Component {
 
@@ -10,14 +11,16 @@ class UserList extends React.Component {
         return (
             <div>
                 <h2>Users</h2>
-            <table className='users'>
+                <table className='users'>
                     <thead>
-                        <th>Users</th>
-                        <th>blogs added</th>
+                        <tr>
+                            <th>Users</th>
+                            <th>blogs added</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {this.props.users && this.props.users.map(user =>
-                            <User key={user.id} user={user} />)}
+                            <User key={user.id} user={user} history={this.props.history} />)}
                     </tbody>
                 </table>
             </div>
@@ -25,9 +28,10 @@ class UserList extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         users: state.users,
+        history: ownProps.history
     }
 }
 

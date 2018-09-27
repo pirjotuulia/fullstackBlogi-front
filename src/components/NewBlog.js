@@ -28,7 +28,10 @@ class NewBlog extends React.Component {
         } else {
             this.props.messageCreation(`title or url missing`, 5)
         }
+        this.props.toggle()
+        this.props.history.push('/blogs')
     }
+    
     render() {
         return (
             <div>
@@ -68,9 +71,9 @@ class NewBlog extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        createBlog: state.createBlog,
+        createBlog: state.createBlog
     }
 }
 

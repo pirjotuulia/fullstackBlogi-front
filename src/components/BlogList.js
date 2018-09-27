@@ -3,6 +3,7 @@ import { messageCreation } from '../reducers/notificationReducer'
 import { likeCreation, blogDelete } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
 import Blog from '../components/Blog'
+import Header from './Header'
 
 class BlogList extends React.Component {
 
@@ -24,8 +25,10 @@ class BlogList extends React.Component {
         this.props.blogs.sort((a, b) => b.likes - a.likes)
         return (
             <div>
-                {this.props.blogs && this.props.blogs.map(blog =>
-                    <Blog className='blogs' key={blog.id} blog={blog} addLike={this.addLike} deleteBlog={this.deleteBlog} />)}
+                <div>
+                    {this.props.blogs && this.props.blogs.map(blog =>
+                        <Blog className='blogs' key={blog.id} blog={blog} addLike={this.addLike} deleteBlog={this.deleteBlog} />)}
+                </div>
             </div>
         )
     }

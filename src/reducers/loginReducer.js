@@ -28,4 +28,13 @@ export const logout = () => {
     }
 }
 
+export const loginCheck = (user) => {
+    return async (dispatch) => {
+        dispatch({
+            type: 'LOGIN',
+            data: user
+        })
+    }
+}
+
 export default loginReducer

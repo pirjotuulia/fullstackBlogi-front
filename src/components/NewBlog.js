@@ -1,5 +1,4 @@
 import React from 'react'
-import blogService from '../services/blogs'
 import { messageCreation } from '../reducers/notificationReducer'
 import { blogCreation } from '../reducers/blogReducer'
 import { connect } from 'react-redux'

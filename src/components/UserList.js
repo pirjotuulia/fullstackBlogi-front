@@ -2,7 +2,6 @@ import React from 'react'
 import { messageCreation } from '../reducers/notificationReducer'
 import { connect } from 'react-redux'
 import User from '../components/User'
-import Header from './Header'
 
 class UserList extends React.Component {
 

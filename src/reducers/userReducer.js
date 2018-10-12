@@ -38,7 +38,7 @@ export const userInitialization = () => {
 
 export const userDelete = (data) => {
   return async (dispatch) => {
-    const deleted = await userService.deleteUser(data)
+    await userService.deleteUser(data)
     dispatch({
       type: 'DELETE',
       data: data

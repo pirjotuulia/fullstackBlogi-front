@@ -1,5 +1,6 @@
 import React from 'react'
-import blogService from '../services/blogs.js'
+import { messageCreation } from '../reducers/notificationReducer'
+import { likeCreation, blogDelete } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
 import '../index.css'
 
@@ -7,49 +8,68 @@ class Blog extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      visible: false
+      blog: this.blogById()
     }
   }
 
-  toggleDetails = () => {
-    this.setState({ visible: !this.state.visible })
+  deleteBlog = async (event) => {
+    this.props.blogDelete(event.target.id)
+    this.props.messageCreation(`blog deleted`, 5)
+    this.props.history.push(`/blogs`)
   }
 
   handleDelete = (event) => {
-    let result = window.confirm(`delete ${this.props.blog.title} by ${this.props.blog.author}?`)
+    let result = window.confirm(`delete ${this.state.blog.title} by ${this.state.blog.author}?`)
     if (result) {
-      this.props.deleteBlog(event)
+      this.deleteBlog(event)
     }
   }
 
   handleLike = (event) => {
-    this.props.addLike(event)
+    event.preventDefault()
+    let updatedBlog = { ...this.state.blog, likes: this.state.blog.likes + 1 }
+    this.props.likeCreation(updatedBlog)
+    this.props.messageCreation(`you liked '${updatedBlog.title}'`, 5)
+  }
+
+
+  blogById = () => {
+    if (!this.props.blogs) {
+      console.log("ei ole")
+    }
+    return this.props.blogs.find(blog => blog.id === this.props.match.params.id)
   }
 
   render() {
+    let blog = this.blogById()
     return (
       <div className="blogentry" >
-        {this.props.blog&&<div className='namediv' onClick={this.toggleDetails}>{this.props.blog.title} {this.props.blog.author}</div>}
-        {this.props.blog&&this.state.visible && <div className='infodiv'>
-          <a href={this.props.blog.url}>{this.props.blog.url}</a><br></br>
-          {this.props.blog.likes} likes <button onClick={this.handleLike} id={this.props.blog.id}>likes</button><br></br>
-          added by {this.props.blog.author}<br></br>
-          {(!this.props.blog.user || this.props.blog.author === this.props.user.name) && <button id={this.props.blog.id} onClick={this.handleDelete}>delete</button>}
-        </div>}
+        <div className='namediv' onClick={this.toggleDetails}>{blog.title} {blog.author}</div>
+        <div className='infodiv'>
+          <a href={blog.url}>{blog.url}</a><br></br>
+          {blog.likes} likes <button onClick={this.handleLike} id={blog.id}>likes</button><br></br>
+          added by {blog.author}<br></br>
+          {(!blog.user || blog.author === this.props.user.name) && <button id={blog.id} onClick={this.handleDelete}>delete</button>}
+        </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
-    blog: ownProps.blog,
-    user: state.user
+    user: state.user,
+    blogs: state.blogs
   }
 }
-
+const mapDispatchToProps = {
+  messageCreation,
+  likeCreation,
+  blogDelete
+}
 const ConnectedBlog = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Blog)
 
 

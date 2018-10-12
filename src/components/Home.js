@@ -1,10 +1,6 @@
 import React from 'react'
 import blogService from '../services/blogs'
 import userService from '../services/users'
-import LoginForm from '../components/LoginForm'
-import Togglable from '../components/Togglable'
-import BlogList from '../components/BlogList'
-import Header from '../components/Header'
 import '../index.css'
 
 import { blogInitialization } from '../reducers/blogReducer'

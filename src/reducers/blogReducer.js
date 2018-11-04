@@ -10,6 +10,11 @@ const blogReducer = (state = [], action) => {
     let newBlog = action.data
     return [...state, newBlog]
   }
+  if (action.type === 'UPDATE') {
+    const blogs = state
+    const old = blogs.filter(b => b.id !== action.data.id)
+    return [...old, action.data]
+  }
   if (action.type === 'INIT_BLOGS') {
     return action.data
   }
@@ -27,6 +32,16 @@ export const blogCreation = (data) => {
     dispatch({
       type: 'CREATE',
       data: newBlog
+    })
+  }
+}
+
+export const commentCreation = (blogId, data) => {
+  return async (dispatch) => {
+    const blogCommented = await blogService.createComment(blogId, data)
+    dispatch({
+      type: 'UPDATE',
+      data: blogCommented
     })
   }
 }

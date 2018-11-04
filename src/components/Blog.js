@@ -3,6 +3,8 @@ import { messageCreation } from '../reducers/notificationReducer'
 import { likeCreation, blogDelete } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
 import '../index.css'
+import CommentList from './CommentList'
+import NewComment from './NewComment'
 
 class Blog extends React.Component {
   constructor(props) {
@@ -50,6 +52,9 @@ class Blog extends React.Component {
           {blog.likes} likes <button onClick={this.handleLike} id={blog.id}>likes</button><br></br>
           added by {blog.author}<br></br>
           {(!blog.user || blog.author === this.props.user.name) && <button id={blog.id} onClick={this.handleDelete}>delete</button>}
+          <h2>Comments</h2>
+          <NewComment history={this.props.history} match={this.props.match}/>
+          <CommentList comments={blog.comments} />
         </div>
       </div>
     )

@@ -9,7 +9,7 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^1.1.5",
+    "react-scripts": "^2.1.1",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-persist": "^5.10.0",
@@ -25,6 +25,14 @@
   "devDependencies": {
     "deep-freeze": "0.0.1",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1"
-  }
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^5.6.0",
+    "eslint-plugin-jest": "^22.0.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

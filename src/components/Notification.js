@@ -9,7 +9,7 @@ class Notification extends React.Component {
       padding: 10,
       borderWidth: 1
     }
-    const {notification} = this.props
+    const { notification } = this.props
     return (
       <div>
         {notification && <div style={style}>

@@ -16,8 +16,8 @@ class Blog extends React.Component {
 
   deleteBlog = async (event) => {
     this.props.blogDelete(event.target.id)
-    this.props.messageCreation(`blog deleted`, 5)
-    this.props.history.push(`/blogs`)
+    this.props.messageCreation('blog deleted', 5)
+    this.props.history.push('/blogs')
   }
 
   handleDelete = (event) => {
@@ -37,7 +37,7 @@ class Blog extends React.Component {
 
   blogById = () => {
     if (!this.props.blogs) {
-      console.log("ei ole")
+      console.log('ei ole')
     }
     return this.props.blogs.find(blog => blog.id === this.props.match.params.id)
   }
@@ -53,7 +53,7 @@ class Blog extends React.Component {
           added by {blog.author}<br></br>
           {(!blog.user || blog.author === this.props.user.name) && <button id={blog.id} onClick={this.handleDelete}>delete</button>}
           <h2>Comments</h2>
-          <NewComment history={this.props.history} match={this.props.match}/>
+          <NewComment history={this.props.history} match={this.props.match} />
           <CommentList comments={blog.comments} />
         </div>
       </div>

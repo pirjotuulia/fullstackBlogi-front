@@ -5,13 +5,13 @@
   "dependencies": {
     "axios": "^0.17.1",
     "prop-types": "^15.6.2",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.1",
     "redux": "^4.0.0",
-    "redux-devtools-extension": "^2.13.5",
+    "redux-devtools-extension": "^2.13.7",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
@@ -28,8 +28,8 @@
     "deep-freeze": "0.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "eslint": "^5.6.0",
-    "eslint-plugin-jest": "^22.0.0"
+    "eslint": "^5.9.0",
+    "eslint-plugin-jest": "^22.1.2"
   },
   "browserslist": [
     ">0.2%",

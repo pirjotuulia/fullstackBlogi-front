@@ -10,6 +10,7 @@ import { messageCreation } from './reducers/notificationReducer'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import './index.css'
 import { connect } from 'react-redux'
+import { Container, Menu } from 'semantic-ui-react'
 
 class App extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <Container>
         <h2>Blog App</h2>
         <Router>
           <div>
@@ -36,7 +37,23 @@ class App extends React.Component {
               <Link to="/">Home</Link> &nbsp;
               <Link to="/blogs">Blogs</Link> &nbsp;
               <Link to="/users">Users</Link> &nbsp;
-              <i>{this.props.user.name} logged in. </i> <button type="submit" onClick={this.handleLogout}>logout</button>
+              <Menu inverted>
+                <Menu.Item link>
+                  <Link to="/">Home</Link>
+                </Menu.Item>
+                <Menu.Item link>
+                  <Link to="/blogs">Blogs</Link>
+                </Menu.Item>
+                <Menu.Item link>
+                  <Link to="/users">Users</Link>
+                </Menu.Item>
+                <Menu.Item link>
+                  {this.props.user
+                    ? <span><em>{this.props.user.name} logged in</em> <button type="submit" onClick={this.handleLogout}>logout</button></span>
+                    : <Link to="/login">Login</Link>
+                  }
+                </Menu.Item>
+              </Menu>
             </div>}
             <Header history={this.props.history} />
             <Route exact path="/" render={({ history }) => <Home history={history} />} />
@@ -48,7 +65,7 @@ class App extends React.Component {
             </div>}
           </div>
         </Router>
-      </div>
+      </Container>
     )
   }
 }

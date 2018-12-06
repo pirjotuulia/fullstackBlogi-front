@@ -2,6 +2,7 @@ import React from 'react'
 import { messageCreation } from '../reducers/notificationReducer'
 import { blogCreation } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
+import { Form } from 'semantic-ui-react'
 
 class NewBlog extends React.Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class NewBlog extends React.Component {
     return (
       <div>
         <h2>Create new</h2>
-        <form onSubmit={this.createBlog}>
+        <Form onSubmit={this.createBlog}>
           <div>
             Title
             <input
@@ -64,7 +65,7 @@ class NewBlog extends React.Component {
             />
           </div>
           <button type="submit">create</button>
-        </form>
+        </Form>
       </div>
     )
   }

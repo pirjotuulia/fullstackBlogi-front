@@ -2,6 +2,7 @@ import React from 'react'
 import { messageCreation } from '../reducers/notificationReducer'
 import { commentCreation } from '../reducers/blogReducer'
 import { connect } from 'react-redux'
+import { Form } from 'semantic-ui-react'
 
 class NewComment extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class NewComment extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.createComment}>
+        <Form onSubmit={this.createComment}>
           <div>
             <input
               type="text"
@@ -41,7 +42,7 @@ class NewComment extends React.Component {
             />
             <button type="submit">add comment</button>
           </div>
-        </form>
+        </Form>
       </div>
     )
   }
